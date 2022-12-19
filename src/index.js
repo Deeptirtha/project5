@@ -1,13 +1,15 @@
 const express = require("express");
-const route = require("./router");
-const bodyParser= require("body-parser")
+const route = require("./route/route");
 const mongoose = require("mongoose");
+const multer= require("multer")
+
  const app = express();
  app.use(express.json());
+ app.use(multer().any())
 
- mongoose
-  .connect(
-    "mongodb+srv://DeeptirthaMukherjee:QYKI3k8QSKC4I7FZ@cluster1.khatgm1.mongodb.net/project5-db?retryWrites=true&w=majority",
+
+ mongoose.set('strictQuery', false)
+ mongoose.connect("mongodb+srv://DeeptirthaMukherjee:QYKI3k8QSKC4I7FZ@cluster1.khatgm1.mongodb.net/project5-db?retryWrites=true&w=majority",
     { UseNewUrlParser: true }
   )
   .then(() => console.log("Mongo-Db is connected"))
