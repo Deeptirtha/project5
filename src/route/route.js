@@ -23,7 +23,9 @@ router.put ("/user/:userId/profile",authentication,updateUser)
 
 
 
-
+router.all("/*" ,function(req,res){
+return res.status(404).send({msg:"Galat api hai Boss Dusra rasta chunlijiye AOO KAVI HAVELI MAI"})
+})
 
 
 module.exports = router;

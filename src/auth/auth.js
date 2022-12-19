@@ -9,6 +9,7 @@ const userModel = require("../models/usermodel")
         let bearerToken = bearerHeader.split(' ');  
         let token = bearerToken[1];
         let decodedToken =jwt.verify(token, "Project5")
+        console.log(decodedToken)
         req.decodedToken = decodedToken;
         next();
     } catch (err) {
