@@ -1,23 +1,21 @@
 const jwt = require('jsonwebtoken')
 const userModel = require("../models/usermodel")
-const validate = require("../validations/validation")
 
- let Authentication= async (req, res, next) => {
+
+ let authentication = async function (req, res, next){
     try {
-        let bearerHeader = req.headers.authorization;
-        if (typeof bearerHeader == "undefined") {
-            return res.status(401).send({ status: false, message: "Token is missing! please enter token." });
-        }
+        let bearerHeader = req.headers.authorization
+        if (!bearerHeader) {return res.status(401).send({ status: false, message: "Token is missing! please enter token." })}
         let bearerToken = bearerHeader.split(' ');  
         let token = bearerToken[1];
-        let decodedToken =jwt.verify(token, "")
+        let decodedToken =jwt.verify(token, "Project5")
         req.decodedToken = decodedToken;
         next();
-    } catch (error) {
+    } catch (err) {
         if(err.message == "jwt expired") return res.status(401).send({ status: false, message: "JWT expired, login again" })
         if(err.message == "invalid signature") return res.status(401).send({ status: false, message: "Token is incorrect authentication failed" })
-        return res.status(500).send({ status: false, error: error.message });
+        return res.status(500).send({ status: false, error: err.message });
     }
 }
 
-module.exports={Authentication}
+module.exports={authentication}
