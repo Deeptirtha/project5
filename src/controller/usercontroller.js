@@ -24,34 +24,33 @@ const CreatUser= async function(req,res){
 
 
            if (typeof(address)!== "object") {return res.status(400).send({ status: true, msg: "please put address in object format" })}
-           if (typeof(address.shipping)!== "object" || !address.shipping) {return res.status(400).send({ status: true, msg: "please put shipping in object format" })}
-           if (typeof(address.billing)!== "object" ||!address.billing) {return res.status(400).send({ status: true, msg: "please put billing in object format" })}
+
+           if (typeof(address.shipping)!== "object" || !address.shipping) {return res.status(400).send({ status: true, msg: "please put shipping-address in object format" })}
+
+           if (typeof(address.billing)!== "object" || !address.billing) {return res.status(400).send({ status: true, msg: "please put billing-address in object format" })}
  
             let arr=["street","city","pincode"]
             for(i of arr){
-              if (!address.shipping[i])return res.status(400).send({status:false,msg:`${i} is not present inside your shipping-address`})
-          
-          }
+                if (!address.shipping[i])return res.status(400).send({status:false,msg:`${i} is not present inside your shipping-address`})}
 
-          for(i of arr){
-            if (!address.billing[i])return res.status(400).send({status:false,msg:`${i} is not present inside your billing-address`})
+            for(i of arr){
+                if (!address.billing[i])return res.status(400).send({status:false,msg:`${i} is not present inside your billing-address`})}
+
+            if (!address.shipping.street || isValidString(address.shipping.street.trim())) {return res.status(400).send({status: false,message: "street can't be empty in your shipping-address "})}
         
-        }
-            if (!address.shipping.street) {return res.status(400).send({status: false,message: "street can't be empty in your shipping-address "})}
-        
-            if (!address.shipping.city) {return res.status(400).send({status: false,message: "city can't be empty in your shipping-address  "})}
+            if (!address.shipping.city || isValidString(address.shipping.city.trim())) {return res.status(400).send({status: false,message: "city can't be empty in your shipping-address  "})}
         
             if (!address.shipping.pincode ||!isValidPincode(address.shipping.pincode)) {return res.status(400).send({ status: false, message: "please input valid shipping-pincode " }) }
             
-            if (!address.billing.street) {return res.status(400).send({status: false,message: "street can't be empty in your shipping-address "})}
+            if (!address.billing.street || isValidString(address.billing.street.trim())) {return res.status(400).send({status: false,message: "street can't be empty in your billing-address "})}
+
+            if (!address.billing.city || isValidString(address.billing.city.trim())) {return res.status(400).send({status: false,message: "city can't be empty in your billing-address  "})}
         
-            if (!address.billing.city) {return res.status(400).send({status: false,message: "city can't be empty in your shipping-address  "})}
-        
-            if (!address.billing.pincode ||!isValidPincode (address.billing.pincode)) {return res.status(400).send({ status: false, message: "please input valid shipping-pincode " }) }
+            if (!address.billing.pincode ||!isValidPincode (address.billing.pincode)) {return res.status(400).send({ status: false, message: "please input valid billing-pincode " }) }
         
  
-        let oldUser = await UserModel.findOne({$or: [{ phone: data.phone }, { email: data.email }]})
-        if (oldUser) {return res.status(400).send({status: false,message: "User already exist with this phone no or email Id"})}
+    let oldUser = await UserModel.findOne({$or: [{ phone: data.phone }, { email: data.email }]})
+    if (oldUser) {return res.status(400).send({status: false,message: "User already exist with this phone no or email Id"})}
 
         
       let PicUrl = await uploadFile(files[0])
@@ -62,7 +61,7 @@ const CreatUser= async function(req,res){
      data.address=address
       let NewUswer= await UserModel.create(data)
    
-      res.status(201).send({status:true,message: "User profile details",data:NewUswer})
+      res.status(201).send({status:true,message: "User created successfully",data:NewUswer})
 
     }
     catch(err){
