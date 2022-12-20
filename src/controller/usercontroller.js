@@ -130,6 +130,86 @@ const getUser= async function(req,res){
     }
 }
 
+//=============================================UPDATE USER=========================================================//
+const updateUser=async function(req,res){
+    try{
+        let userId = req.params.userId;
+        let body = req.body
+        let token=req.decodedToken
+        if(userId!=token.userId)return res.status(403).send({status:false,msg:"you are not authorised to do this"})
+        let files = req.files
+        let { fname, lname, email, phone, password, address, } = body;
+     
+        if (Object.keys(body).length==0) {
+            return res.status(400).send({ status: false, message: "provide details to update" })
+        }
+        if (fname) {
+            if (isValidString(fname)) 
+            return res.status(400).send({ status: false, msg: "provide valid first name" })    
+        }  
+
+       if (lname) {
+                if (isValidString(lname)) 
+                return res.status(400).send({ status: false, msg: "lname already presesnt" })        
+       } 
+      if (email) {
+        if (!isValidEmail(email)) 
+        return res.status(400).send({ status: false, message: "Invalid email type" })
+        let checkEmail = await userModel.findOne({ email: body.email });
+        if (checkEmail) 
+        return res.status(400).send({ status: false, message: "The email is already exist" })  
+     } 
+    if (phone) {
+        if (!isValidPhone(phone)) 
+        return res.status(400).send({ status: false, message: "Invalid number type" })
+        let checkPhone = await userModel.findOne({ phone: body.phone });
+        if (checkPhone) 
+        return res.status(400).send({ status: false, message: "The phone number is already exist" })       
+    }
+    if (password) {
+        if (!isValidPswd(password.trim())) 
+        return res.status(400).send({ status: false, message: "Please enter valid password" })
+       }
+   if(body.address){           
+    let address=body.address
+    address=JSON.parse(address)
+
+        if (typeof address != "object") {return res.status(400).send({ status: false, message: "provide address in proper formate" })}
+     
+        if(address.shipping){
+
+           if (typeof(address.shipping)!== "object" ) {return res.status(400).send({ status: true, msg: "please put shipping-address in object format" })}
+           if (address.shipping.street){
+           if (isValidString(address.shipping.street.trim())) {return res.status(400).send({status: false,message: "please put valid street in your shipping-address "})}}
+           if (address.shipping.city){
+           if ( isValidString(address.shipping.city.trim())) {return res.status(400).send({status: false,message: "please put valid city in your shipping-address  "})}}
+           if (address.shipping.pincode){
+           if (!isValidPincode(address.shipping.pincode)) {return res.status(400).send({ status: false, message: "please input valid shipping-pincode " }) }}}
+    
+           if(address.billing){
+           if (typeof(address.billing)!== "object" ) {return res.status(400).send({ status: true, msg: "please put billing-address in object format" })}
+           if (address.billing.street){
+           if ( isValidString(address.billing.street.trim())) {return res.status(400).send({status: false,message: "please put valid street in your billing-address "})}}
+           if (address.billing.city){
+           if ( isValidString(address.billing.city.trim())) {return res.status(400).send({status: false,message: "please put valid city  in your billing-address  "})}}
+           if (address.billing.pincode){
+           if (!isValidPincode (address.billing.pincode)) {return res.status(400).send({ status: false, message: "please input valid billing-pincode " }) }}}
+        
+            body.address=address
+        }
+            if (files && files.length != 0) {
+                let profileImage = await uploadFile(files[0]);
+               body.profileImage=profileImage
+            }
+         
+       let update = await userModel.findOneAndUpdate(userId,body,{new:true})
+        return res.status(200).send({ status: true, message: " updated Successfully ", data: update });
+    }
+    catch(err){
+        return res.status(500).send({status:false,msg:err.message})
+    }
+}
 
 
-module.exports={userLogin,getUser,createUser}
+
+module.exports={userLogin,getUser,createUser,updateUser}

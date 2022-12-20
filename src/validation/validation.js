@@ -30,4 +30,19 @@ const isValidPhone = (Mobile) => {
 const isValidPswd = (Password) => {
   return /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,15}$/.test(Password)
 }
-  module.exports={isValidObjectId, isValidPswd,isValidEmail,isValidString ,isValidPincode, isValidPhone }
+
+
+const isValidSize = (availableSizes) => {
+  let correctTitle = ["S", "XS","M","X", "L","XXL", "XL"];
+      if (correctTitle.includes(availableSizes)) {
+        return true
+      } else {
+        return false
+      }
+    }
+
+    function isValidPrice(input){
+      var RE = /^-{0,1}\d*\.{0,1}\d+$/;
+      return (RE.test(input));
+    }
+  module.exports={isValidObjectId, isValidPswd,isValidEmail,isValidString ,isValidPincode, isValidPhone,isValidSize ,isValidPrice}
