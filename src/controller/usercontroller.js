@@ -215,5 +215,4 @@ if(body.address){
 }
 
 
-
 module.exports={CreatUser,getUser,userLogin,updateUser}
