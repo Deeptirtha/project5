@@ -36,7 +36,7 @@ const createProduct= async function(req,res){
          data.productImage=uploadImage
 
         if(availableSizes){
-        var size= availableSizes.split(" ")
+        let size= availableSizes.split(" ")
          for(let i=0;i<size.length;i++){   
          if(!isValidSize(size[i])){return res.status(400).send({status:false,message:"Available sizes can be only these-S, XS, M ,X, L, XXL, XL"})}
          }
