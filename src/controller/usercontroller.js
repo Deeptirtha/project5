@@ -5,6 +5,9 @@ const  { uploadFile }=require("../aws")
 const { isValidObjectId } = require("mongoose")
 const {isValidString,isValidPincode,isValidPhone,isValidEmail,isValidPswd}= require("../validation/validation")
 
+
+//===============================================================CREATE USERS=====================================================================
+
 const CreatUser= async function(req,res){
     try{
         let data=req.body;
@@ -71,11 +74,7 @@ res.status(500).send({status:false,msg:err.message})
     }
 }
 
-
-
-
-
-//====================================================LOGIN USERS================================================//
+//==========================================================LOGIN USERS==========================================================================
 const userLogin= async function(req,res){
     try {
         let data= req.body
@@ -85,10 +84,10 @@ let  {email,password,phone}=data
     }
     if (data.hasOwnProperty("email") && data.hasOwnProperty("phone") ) {return res.status(400).send({ status: false, message: "please provide any one between email and phone no" })}
     if (!data.hasOwnProperty("email")) {
-      if(!data.hasOwnProperty("phone")) {return res.status(400).send({status: false,message: "please enter mobile no or email id to login"})}}
+    if (!data.hasOwnProperty("phone")) {return res.status(400).send({status: false,message: "please enter mobile no or email id to login"})}}
     if (!data.hasOwnProperty("password")) {return res.status(400).send({ status: false, message: "please enter password to login" })}
 
-   // if(!email){return res.status(400).send({status:false,messsage:"email is required"})}
+  
    if(email){
     if(!isValidEmail(email,trim())){return res.status(400).send({status:false,message:"Email is invalid"})}}
    
@@ -130,7 +129,7 @@ const getUser= async function(req,res){
     }
 }
 
-
+//==========================================================UPDATE USERS=========================================================================
 
 const updateUser=async function(req,res){
     try{
