@@ -2,8 +2,7 @@ const bcrypt = require('bcrypt')
 const UserModel= require("../models/usermodel")
 const jwt = require('jsonwebtoken')
 const  { uploadFile }=require("../aws")
-const { isValidObjectId } = require("mongoose")
-const {isValidString,isValidPincode,isValidPhone,isValidEmail,isValidPswd}= require("../validation/validation")
+const {isValidString,isValidPincode,isValidPhone,isValidEmail,isValidPswd,isValidObjectId }= require("../validation/validation")
 
 
 //===============================================================CREATE USERS=====================================================================

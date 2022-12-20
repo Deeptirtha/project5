@@ -12,14 +12,14 @@ const createProduct= async function(req,res){
          let files= req.files
          let {title, description,price,currencyId,currencyFormat,availableSizes}=data
          if(Object.keys(data).length==0){
-            return res.status(400).send({status:false,message:"data should be present in request body"})
+            return res.status(400).send({status:false,message:"Data should be present in request body"})
          }
-         if(!title){return res.status(400).send({status:false,message:"title should be present"})}  
+         if(!title.trim()){return res.status(400).send({status:false,message:"Title should be present"})}  
 
-         if(!description){return res.status(400).send({status:false,message:"description should be present"})}
+         if(!description.trim()){return res.status(400).send({status:false,message:"Description should be present"})}
 
-         if(!price){return res.status(400).send({status:false,message:"price should be present"})}
-         if(!isValidPrice(price)){return res.status(400).send({status:false,message:"price can be numeric or decimal"})}
+         if(!price){return res.status(400).send({status:false,message:"Price should be present"})}
+         if(!isValidPrice(price)){return res.status(400).send({status:false,message:"Price can be numeric or decimal"})}
 
          if(!currencyId){return res.status(400).send({status:false,message:"currencyId should be present"})}
          if(currencyId !=="INR"){return res.status(400).send({status:false,message:"currencyId should be in INR format"})}
@@ -27,15 +27,18 @@ const createProduct= async function(req,res){
          if(!currencyFormat){return res.status(400).send({status:false,message:"currencyFormat should be present"})}
          if(currencyFormat!=="₹"){return res.status(400).send({status:false,message:"currencyFormat should be this-₹ "})}
 
-         
+        if(data.installments){
+        if(isNaN(data.installments))return res.status(400).send({status:false,msg:"Please put installments in Number"})}
+        
+
          let uploadImage= await uploadFile(files[0])
          if(!uploadImage){return res.status(400).send({status:false,message:"productImage should be present"})}
          data.productImage=uploadImage
 
-      if(availableSizes){
+        if(availableSizes){
         var size= availableSizes.split(" ")
          for(let i=0;i<size.length;i++){   
-         if(!isValidSize(size[i])){return res.status(400).send({status:false,message:"available sizes can be only these-S, XS, M ,X, L, XXL, XL"})}
+         if(!isValidSize(size[i])){return res.status(400).send({status:false,message:"Available sizes can be only these-S, XS, M ,X, L, XXL, XL"})}
          }
             data.availableSizes=size
         }
@@ -43,7 +46,7 @@ const createProduct= async function(req,res){
          return res.status(201).send({status:true,message:"product created successfully",data:product})
     }
     catch(error){
-         if(error.code==11000){return res.status(400).send({status:false,message:"title should be unique"})}
+        if(error.code==11000){return res.status(400).send({status:false,message:"title should be unique"})}
 
         return res.status(500).send({status:false,message:error.message})
     }
@@ -72,7 +75,7 @@ const getFilteredProduct = async function (req, res){
   
       
       if(data.priceGreaterThan || data.priceLessThan) {
-        if(isNaN(data.priceGreaterThan )|| isNaN(data.priceLessThan))return res.status(400).send({status:false,msg:"enter a valid price to get your product"})
+        if(isNaN(data.priceGreaterThan )|| isNaN(data.priceLessThan))return res.status(400).send({status:false,msg:"Enter a valid price to get your product"})
         if(data.priceGreaterThan && data.priceLessThan){conditions.price={$gte:data.priceGreaterThan,$lte:data.priceLessThan}}
         else if(data.priceGreaterThan){conditions.price={$gt:data.priceGreaterThan}}
         else{conditions.price={$lte:data.priceLessThan}}}
