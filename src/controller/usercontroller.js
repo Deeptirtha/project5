@@ -26,6 +26,7 @@ const CreatUser= async function(req,res){
         
         let address=data.address
         address=JSON.parse(address)
+       
 
 
            if (typeof(address)!== "object") {return res.status(400).send({ status: true, msg: "please put address in object format" })}
@@ -41,13 +42,13 @@ const CreatUser= async function(req,res){
             for(i of arr){
                 if (!address.billing[i])return res.status(400).send({status:false,msg:`${i} is not present inside your billing-address`})}
 
-            if (!address.shipping.street || isValidString(address.shipping.street.trim())) {return res.status(400).send({status: false,message: "please put valid street in your shipping-address "})}
+            if (!address.shipping.street.trim()) {return res.status(400).send({status: false,message: "please put valid street in your shipping-address "})}
         
             if (!address.shipping.city || isValidString(address.shipping.city.trim())) {return res.status(400).send({status: false,message: "please put valid city in your shipping-address  "})}
         
             if (!address.shipping.pincode ||!isValidPincode(address.shipping.pincode)) {return res.status(400).send({ status: false, message: "please input valid shipping-pincode " }) }
             
-            if (!address.billing.street || isValidString(address.billing.street.trim())) {return res.status(400).send({status: false,message: "please put valid street in your billing-address "})}
+            if (!address.billing.street.trim()) {return res.status(400).send({status: false,message: "please put valid street in your billing-address "})}
 
             if (!address.billing.city || isValidString(address.billing.city.trim())) {return res.status(400).send({status: false,message: "please put valid city in your billing-address  "})}
         
@@ -184,7 +185,7 @@ if(body.address){
 
            if (typeof(address.shipping)!== "object" ) {return res.status(400).send({ status: true, msg: "please put shipping-address in object format" })}
            if (address.shipping.street){
-           if (isValidString(address.shipping.street.trim())) {return res.status(400).send({status: false,message: "please put valid street in your shipping-address "})}}
+           if (address.shipping.street.trim()) {return res.status(400).send({status: false,message: "please put valid street in your shipping-address "})}}
            if (address.shipping.city){
            if ( isValidString(address.shipping.city.trim())) {return res.status(400).send({status: false,message: "please put valid city in your shipping-address  "})}}
            if (address.shipping.pincode){
@@ -193,7 +194,7 @@ if(body.address){
            if(address.billing){
            if (typeof(address.billing)!== "object" ) {return res.status(400).send({ status: true, msg: "please put billing-address in object format" })}
            if (address.billing.street){
-           if ( isValidString(address.billing.street.trim())) {return res.status(400).send({status: false,message: "please put valid street in your billing-address "})}}
+           if ( address.billing.street.trim()) {return res.status(400).send({status: false,message: "please put valid street in your billing-address "})}}
            if (address.billing.city){
            if ( isValidString(address.billing.city.trim())) {return res.status(400).send({status: false,message: "please put valid city  in your billing-address  "})}}
            if (address.billing.pincode){

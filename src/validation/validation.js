@@ -1,3 +1,10 @@
+const mongoose= require("mongoose")
+//=========================================VALIDATIONS=====================================================//
+const isValidObjectId = (objectId) => {
+    return mongoose.Types.ObjectId.isValid(objectId)
+}
+  
+  
   const isValidString = (String) => {
     return /\d/.test(String)
   }
@@ -18,4 +25,17 @@
     return /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,15}$/.test(Password)
   }
 
-  module.exports={isValidPincode ,isValidString,isValidPhone,isValidEmail,isValidPswd}
+  const isValidSize = (size) => {
+    let correctTitle = ["S", "XS","M","X", "L","XXL", "XL"];
+        if (correctTitle.includes(size)) {
+          return true
+        } else {
+          return false
+        }
+      }
+  function isValidPrice(input){
+        var RE = /^-{0,1}\d*\.{0,1}\d+$/;
+        return (RE.test(input));
+      }
+
+  module.exports={isValidObjectId,isValidPincode ,isValidString,isValidPhone,isValidEmail,isValidPswd,isValidSize,isValidPrice}
