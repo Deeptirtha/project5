@@ -1,15 +1,15 @@
 const express=require("express")
 const router=express.Router()
 const {CreatUser,getUser,userLogin,updateUser}= require("../controller/usercontroller")
-const {authentication}= require("../auth/auth")
+const {authentication,authorization}= require("../auth/auth")
 
 router.post("/register",CreatUser)
 
 router.post("/login",userLogin)
 
-router.get("/user/:userId/profile",getUser)
+router.get("/user/:userId/profile",authentication,authorization,getUser)
 
-router.put ("/user/:userId/profile",authentication,updateUser)
+router.put ("/user/:userId/profile",authentication,authorization,updateUser)
 
 
 

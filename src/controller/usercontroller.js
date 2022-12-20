@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt')
 const UserModel= require("../models/usermodel")
 const jwt = require('jsonwebtoken')
 const  { uploadFile }=require("../aws")
+const { isValidObjectId } = require("mongoose")
 const {isValidString,isValidPincode,isValidPhone,isValidEmail,isValidPswd}= require("../validation/validation")
 
 const CreatUser= async function(req,res){
@@ -135,8 +136,6 @@ const updateUser=async function(req,res){
     try{
         let userId = req.params.userId;
         let body = req.body
-        let token=req.decodedToken
-        if(userId!=token.userId)return res.status(403).send({status:false,msg:"you are not authorised to do this"})
         let files = req.files
         let { fname, lname, email, phone, password, address, } = body;
      
