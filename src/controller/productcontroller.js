@@ -72,6 +72,7 @@ const getFilteredProduct = async function (req, res){
   
       
       if(data.priceGreaterThan || data.priceLessThan) {
+        if(isNaN(data.priceGreaterThan )|| isNaN(data.priceLessThan))return res.status(400).send({status:false,msg:"enter a valid price to get your product"})
         if(data.priceGreaterThan && data.priceLessThan){conditions.price={$gte:data.priceGreaterThan,$lte:data.priceLessThan}}
         else if(data.priceGreaterThan){conditions.price={$gt:data.priceGreaterThan}}
         else{conditions.price={$lte:data.priceLessThan}}}
@@ -90,7 +91,7 @@ const getFilteredProduct = async function (req, res){
 
 
   //========================================================GET PRODUCT BY ID==============================================================
-  
+
 const getProduct= async function(req,res){
     try{
        let productId= req.params.productId
@@ -111,3 +112,4 @@ const getProduct= async function(req,res){
 
 
 module.exports={createProduct,getFilteredProduct,getProduct}
+
