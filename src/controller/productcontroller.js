@@ -4,7 +4,7 @@ const{isValidSize,isValidPrice,isValidObjectId}=  require("../validation/validat
 
 
 
-//=======================================================create product==================================================================
+//===========================================================create product==================================================================
 
 const createProduct= async function(req,res){
     try{
@@ -93,7 +93,7 @@ const getFilteredProduct = async function (req, res){
 
 
 
-  //========================================================GET PRODUCT BY ID==============================================================
+  //=============================================================GET PRODUCT BY ID==============================================================
 
 const getProduct= async function(req,res){
     try{
