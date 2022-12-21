@@ -13,6 +13,13 @@ const CreatUser= async function(req,res){
         let files=req.files
        
         if(Object.keys(data).length==0)return res.status(400).send({status:false,msg:"can't create data with empty body"})
+
+
+
+        let array=Object.keys(data)
+        for(i of array){
+         if(data[i]=="")return res.status(400).send({status:false,msg:` ${i} cam't be empty`})
+        }
        
 
         if(!data.fname || isValidString( data.fname.trim()))return res.status(400).send({status:false,msg:"please enter a valid fname"})
@@ -141,6 +148,14 @@ const updateUser=async function(req,res){
         if (Object.keys(body).length==0) {
             return res.status(400).send({ status: false, message: "provide details to update" })
         }
+
+
+        let array=Object.keys(body)
+        for(i of array){
+         if(body[i]=="")return res.status(400).send({status:false,msg:` ${i} cam't be empty`})
+        }
+       
+
         if (fname) {
             if (isValidString(fname)) 
             return res.status(400).send({ status: false, msg: "provide valid first name" })

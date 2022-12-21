@@ -12,6 +12,7 @@ let prductScheema=new mongoose.Schema(
     productImage: {type:String, required:true},  
     style: {type:String,trim:true},
     availableSizes: {type:[String] , enum:["S", "XS","M","X", "L","XXL", "XL"]},
+   
     installments: {type:Number},
     deletedAt: {type:Date}, 
     isDeleted: {type:Boolean, default: false},
