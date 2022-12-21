@@ -22,7 +22,7 @@ const CreatUser= async function(req,res){
 
         let array=Object.keys(data)
         for(i of array){
-         if(data[i]=="")return res.status(400).send({status:false,msg:` ${i} can't be empty`})
+         if(data[i].trim()=="")return res.status(400).send({status:false,msg:` ${i} can't be empty`})
         }
        
 
@@ -156,7 +156,7 @@ const updateUser=async function(req,res){
 
         let array=Object.keys(body)
         for(i of array){
-         if(body[i]=="")return res.status(400).send({status:false,msg:` ${i} can't be empty`})
+         if(body[i].trim()=="")return res.status(400).send({status:false,msg:` ${i} can't be empty`})
         }
        
 

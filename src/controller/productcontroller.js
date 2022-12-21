@@ -19,7 +19,7 @@ const createProduct= async function(req,res){
                   
         let arr=Object.keys(data)
         for(i of arr){
-         if(data[i]=="")return res.status(400).send({status:false,msg:` ${i} can't be empty`})
+         if(data[i].trim()=="")return res.status(400).send({status:false,msg:` ${i} can't be empty`})
         }
 
          if(!title){return res.status(400).send({status:false,message:"Title should be present"})}  
