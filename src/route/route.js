@@ -1,8 +1,11 @@
 const express=require("express")
 const router=express.Router()
 const {CreatUser,getUser,userLogin,updateUser}= require("../controller/usercontroller")
-const {getproductbyid}=require("../controller/productcontroller")
+const {getproductbyid,deleteProductById}=require("../controller/productcontroller")
 const {authentication,authorization}= require("../auth/auth")
+
+
+//==========================userAPI'S===============================//
 
 router.post("/register",CreatUser)
 
@@ -12,7 +15,11 @@ router.get("/user/:userId/profile",authentication,authorization,getUser)
 
 router.put ("/user/:userId/profile",authentication,authorization,updateUser)
 
+
+//=======================productAPI'S============================//
+
 router.get("/products/:productId",getproductbyid)
+router.delete("/products/:productId",deleteProductById)
 
 
 
