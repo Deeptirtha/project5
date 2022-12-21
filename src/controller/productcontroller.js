@@ -100,10 +100,16 @@ const getFilteredProduct = async function (req, res){
   
       
       if(data.priceGreaterThan || data.priceLessThan) {
-        if(isNaN(data.priceGreaterThan )|| isNaN(data.priceLessThan))return res.status(400).send({status:false,msg:"Enter a valid price to get your product"})
-        if(data.priceGreaterThan && data.priceLessThan){conditions.price={$gte:data.priceGreaterThan,$lte:data.priceLessThan}}
-        else if(data.priceGreaterThan){conditions.price={$gt:data.priceGreaterThan}}
-        else{conditions.price={$lte:data.priceLessThan}}}
+        
+        if(data.priceGreaterThan && data.priceLessThan){
+          if(!isValidPrice(data.priceGreaterThan)|| !isValidPrice(data.priceLessThan))return res.status(400).send({status:false,msg:"Enter a valid price to get your product"})
+          conditions.price={$gte:data.priceGreaterThan,$lte:data.priceLessThan}}
+        else if(data.priceGreaterThan){
+          if(!isValidPrice(data.priceGreaterThan))return res.status(400).send({status:false,msg:"Enter a valid price to get your product"})
+          conditions.price={$gt:data.priceGreaterThan}}
+        else{
+          if(!isValidPrice(data.priceLessThan))return res.status(400).send({status:false,msg:"Enter a valid price to get your product"})
+          conditions.price={$lte:data.priceLessThan}}}
 
 
       let getFilterProduct = await productModel.find(conditions).sort({ price:data.priceSort })
@@ -145,7 +151,7 @@ const getProduct= async function(req,res){
         const files = req.files
 
         if(Object.keys(data).length==0) return res.status(400).send({status: false ,message: 'provide data to update'})
-        let { title, description, price,isFreeShipping,style,availableSizes, installments,currencyId,currencyFormat } = data
+        let {price,isFreeShipping,availableSizes, installments,currencyId,currencyFormat } = data
 
         if (!isValidObjectId(productId)) return res.status(400).send({ status: false, message: 'productId is not in valid format' })
         let product = await productModel.findOne({_id:productId,isDeleted:false})
@@ -154,17 +160,11 @@ const getProduct= async function(req,res){
          
         let arr=Object.keys(data)
         for(i of arr){
-         if(data[i]=="")return res.status(400).send({status:false,msg:` ${i} can't be empty`})
+         if(data[i].trim()=="")return res.status(400).send({status:false,msg:` ${i} can't be empty`})
         }
 
-        if (title) {
-          if (!title.trim()) { return res.status(400).send({ status: false, message: "Title should be present" }) }}
-
-        if (description) {
-          if (!description.trim()) { return res.status(400).send({ status: false, message: "Description should be present" }) } }
-
         if (price) {
-          if (!isValidPrice(price)) { return res.status(400).send({ status: false, message: "Price can be numeric or decimal" }) } }
+          if (!isValidPrice(price.trim())) { return res.status(400).send({ status: false, message: "Price can be numeric or decimal" }) } }
     
         if (currencyId) {
           if (currencyId.trim() !== "INR") { return res.status(400).send({ status: false, message: "currencyId should be in INR format" }) } }
@@ -205,7 +205,7 @@ const getProduct= async function(req,res){
       }
         
     }
-
+//=============================================================DELETE PRODUCT BY ID==============================================================
 
     const deleteProductById= async function(req,res){
       try{
@@ -218,8 +218,8 @@ const getProduct= async function(req,res){
               return res.status(404).send({ status: false, message:"Product not found!" })
           }
       
-            let deleteProduct=await productModel.findOneAndUpdate({_id:productId},{isDeleted:true,deletedAt:Date.now()},{new:true})
-          return res.status(200).send({status:false,msg:"Product deleted succesfully",data:deleteProduct}) 
+            await productModel.findOneAndUpdate({_id:productId},{isDeleted:true,deletedAt:Date.now()})
+          return res.status(200).send({status:false,msg:"Product deleted succesfully"}) 
       }
       catch(err){
           return res.status(500).send({status:false,msg:err.message})
