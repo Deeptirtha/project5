@@ -13,7 +13,7 @@ const CreatUser= async function(req,res){
         let files=req.files
        
         if(Object.keys(data).length==0)return res.status(400).send({status:false,msg:"can't create data with empty body"})
-
+        if(files.length==0)return res.status(400).send({status:false,msg:"profile image is manndatory"})
        let newArr=["fname","lname","email","phone","password","address"]
        for(i of newArr){
         if(!data[i])return res.status(400).send({status:false,msg:` ${i} is mandatory please input ${i}`})
@@ -64,11 +64,14 @@ const CreatUser= async function(req,res){
         
             if (!address.billing.pincode ||!isValidPincode (address.billing.pincode)) {return res.status(400).send({ status: false, message: "please input valid billing-pincode " }) }
         
- 
-    let oldUser = await UserModel.findOne({$or: [{ phone: data.phone }, { email: data.email }]})
-    if (oldUser) {return res.status(400).send({status: false,message: "User already exist with this phone no or email Id"})}
+    let oldUser2 = await UserModel.findOne({ email: data.email })
+    if (oldUser2) {return res.status(400).send({status: false,message: "User already exist with this email Id"})}
 
-        
+    let oldUser1 = await UserModel.findOne({ phone: data.phone })
+    if (oldUser1) {return res.status(400).send({status: false,message: "User already exist with this phone no"})}
+
+ 
+    
       let PicUrl = await uploadFile(files[0])
       if(!PicUrl)return res.status(400).send({status:false,msg:"can't creat data without profile picture"})
       data.profileImage=PicUrl
@@ -100,7 +103,7 @@ let  {email,password,phone}=data
 
   
    if(email){
-    if(!isValidEmail(email,trim())){return res.status(400).send({status:false,message:"Email is invalid"})}}
+    if(!isValidEmail(email.trim())){return res.status(400).send({status:false,message:"Email is invalid"})}}
    
 if(phone){
     if(!isValidPhone(phone.trim()))return res.status(400).send({status:false,msg:"please enter a valid phone No"})
@@ -225,7 +228,7 @@ if(body.address){
                body.profileImage=profileImage
             }
          
-       let update = await UserModel.findOneAndUpdate(userId,body,{new:true})
+       let update = await UserModel.findOneAndUpdate({_id:userId},body,{new:true})
         return res.status(200).send({ status: true, message: "Successfully updated", data: update });
     }
     catch(err){

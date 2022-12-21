@@ -15,7 +15,7 @@ const createProduct= async function(req,res){
          if(Object.keys(data).length==0){
             return res.status(400).send({status:false,message:"Data should be present in request body"})
          }
-
+         if(files.length==0)return res.status(400).send({status:false,msg:"profile image is manndatory"})
                   
         let arr=Object.keys(data)
         for(i of arr){
