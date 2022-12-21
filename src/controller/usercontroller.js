@@ -14,16 +14,20 @@ const CreatUser= async function(req,res){
        
         if(Object.keys(data).length==0)return res.status(400).send({status:false,msg:"can't create data with empty body"})
 
+       let newArr=["fname","lname","email","phone","password","address"]
+       for(i of newArr){
+        if(!data[i])return res.status(400).send({status:false,msg:` ${i} is mandatory please input ${i}`})
+       }
 
 
         let array=Object.keys(data)
         for(i of array){
-         if(data[i]=="")return res.status(400).send({status:false,msg:` ${i} cam't be empty`})
+         if(data[i]=="")return res.status(400).send({status:false,msg:` ${i} can't be empty`})
         }
        
 
-        if(!data.fname || isValidString( data.fname.trim()))return res.status(400).send({status:false,msg:"please enter a valid fname"})
-        if(!data.lname || isValidString( data.lname.trim()))return res.status(400).send({status:false,msg:"please enter a valid lname"})
+        if(isValidString( data.fname.trim()))return res.status(400).send({status:false,msg:"please enter a valid fname"})
+        if(isValidString( data.lname.trim()))return res.status(400).send({status:false,msg:"please enter a valid lname"})
 
         if(!isValidEmail(data.email.trim()))return res.status(400).send({status:false,msg:"please enter a valid email"})
         if(!isValidPhone(data.phone.trim()))return res.status(400).send({status:false,msg:"please enter a valid phone No"})
@@ -152,7 +156,7 @@ const updateUser=async function(req,res){
 
         let array=Object.keys(body)
         for(i of array){
-         if(body[i]=="")return res.status(400).send({status:false,msg:` ${i} cam't be empty`})
+         if(body[i]=="")return res.status(400).send({status:false,msg:` ${i} can't be empty`})
         }
        
 

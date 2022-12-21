@@ -19,7 +19,7 @@ const createProduct= async function(req,res){
                   
         let arr=Object.keys(data)
         for(i of arr){
-         if(data[i]=="")return res.status(400).send({status:false,msg:` ${i} cam't be empty`})
+         if(data[i]=="")return res.status(400).send({status:false,msg:` ${i} can't be empty`})
         }
 
          if(!title){return res.status(400).send({status:false,message:"Title should be present"})}  
@@ -154,7 +154,7 @@ const getProduct= async function(req,res){
          
         let arr=Object.keys(data)
         for(i of arr){
-         if(data[i]=="")return res.status(400).send({status:false,msg:`Enter ${i} in correct formate`})
+         if(data[i]=="")return res.status(400).send({status:false,msg:` ${i} can't be empty`})
         }
 
         if (title) {
@@ -186,15 +186,6 @@ const getProduct= async function(req,res){
             return res.status(400).send({status:false,msg:"Enter isFreeShipping in boolian form"})
           }
         }
-
-
-
-
-        //if(isFreeShipping||isFreeShipping==="")
-          //if(isFreeShipping=="")return res.status(400).send({status:false,msg:"Enter isFreeShipping in boolian form"})
-
-
-
 
         if (availableSizes) {
           let size = availableSizes.toUpperCase().split(" ")
