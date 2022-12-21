@@ -27,7 +27,7 @@ const createProduct= async function(req,res){
          if(!description){return res.status(400).send({status:false,message:"Description should be present"})}
 
          if(!price){return res.status(400).send({status:false,message:"Price should be present"})}
-         if(!isValidPrice(price)){return res.status(400).send({status:false,message:"Price can be numeric or decimal"})}
+         if(!isValidPrice(price.trim())){return res.status(400).send({status:false,message:"Price can be numeric or decimal"})}
 
          if(!currencyId){return res.status(400).send({status:false,message:"currencyId should be present"})}
          if(currencyId !=="INR"){return res.status(400).send({status:false,message:"currencyId should be in INR format"})}
@@ -58,7 +58,7 @@ const createProduct= async function(req,res){
         }
 
         if(data.installments){
-          if(isNaN(data.installments))return res.status(400).send({status:false,msg:"Please put installments in Number"})}
+          if(isNaN(data.installments.trim()))return res.status(400).send({status:false,msg:"Please put installments in Number"})}
        
         if(data.isDeleted=="true"){data.deletedAt=Date.now()}
 
