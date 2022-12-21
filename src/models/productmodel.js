@@ -17,6 +17,6 @@ const productSchema= new mongoose.Schema({
 
 module.exports=mongoose.model("Product",productSchema)
 
-//{title, description,price,currencyId,currencyFormat,productImage,availableSizes}
+//{title, description,price,currencyId,currencyFormat,isFreeShipping,productImage,style,availableSizes,installments}
 
 //₹

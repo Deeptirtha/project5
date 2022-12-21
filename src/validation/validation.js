@@ -44,5 +44,5 @@ const isValidSize = (availableSizes) => {
     function isValidPrice(input){
       var RE = /^-{0,1}\d*\.{0,1}\d+$/;
       return (RE.test(input));
-    }
+    } 
   module.exports={isValidObjectId, isValidPswd,isValidEmail,isValidString ,isValidPincode, isValidPhone,isValidSize ,isValidPrice}
