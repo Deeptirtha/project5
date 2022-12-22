@@ -3,7 +3,10 @@ const mongoose= require("mongoose")
 const isValidObjectId = (objectId) => {
     return mongoose.Types.ObjectId.isValid(objectId)
 }
-  
+const validword=function(name){
+  const regexName=/^[a-zA-Z ]+$/;
+  return regexName.test(name)
+}
   
   const isValidString = (String) => {
     return /\d/.test(String)
@@ -38,4 +41,4 @@ const isValidObjectId = (objectId) => {
         return (RE.test(input));
       }
 
-  module.exports={isValidObjectId,isValidPincode ,isValidString,isValidPhone,isValidEmail,isValidPswd,isValidSize,isValidPrice}
+  module.exports={validword,isValidObjectId,isValidPincode ,isValidString,isValidPhone,isValidEmail,isValidPswd,isValidSize,isValidPrice}

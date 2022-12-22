@@ -1,7 +1,7 @@
 const productModel=require("../models/productmodel")
 const  { uploadFile }=require("../aws")
-const{isValidSize,isValidPrice,isValidObjectId}=  require("../validation/validation")
-const { off } = require("../models/productmodel")
+const{validword,isValidSize,isValidPrice,isValidObjectId, isValidString}=  require("../validation/validation")
+
 
 
 
@@ -24,7 +24,7 @@ const createProduct= async function(req,res){
 
          if(!title){return res.status(400).send({status:false,message:"Title should be present"})}  
 
-         if(!description){return res.status(400).send({status:false,message:"Description should be present"})}
+         if(!validword(description)){return res.status(400).send({status:false,message:"Please enter valid Description"})}
 
          if(!price){return res.status(400).send({status:false,message:"Price should be present"})}
          if(!isValidPrice(price.trim())){return res.status(400).send({status:false,message:"Price can be numeric or decimal"})}
@@ -151,7 +151,7 @@ const getProduct= async function(req,res){
         const files = req.files
 
         if(Object.keys(data).length==0) return res.status(400).send({status: false ,message: 'provide data to update'})
-        let {price,isFreeShipping,availableSizes, installments,currencyId,currencyFormat } = data
+        let {description,price,isFreeShipping,availableSizes, installments,currencyId,currencyFormat } = data
 
         if (!isValidObjectId(productId)) return res.status(400).send({ status: false, message: 'productId is not in valid format' })
         let product = await productModel.findOne({_id:productId,isDeleted:false})
@@ -162,6 +162,9 @@ const getProduct= async function(req,res){
         for(i of arr){
          if(data[i].trim()=="")return res.status(400).send({status:false,msg:` ${i} can't be empty`})
         }
+
+        if(description){
+        if(!validword(description)){return res.status(400).send({status:false,message:"Please enter valid Description"})}}
 
         if (price) {
           if (!isValidPrice(price.trim())) { return res.status(400).send({ status: false, message: "Price can be numeric or decimal" }) } }
