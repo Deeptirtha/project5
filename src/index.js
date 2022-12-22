@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
  app.use(express.json());
  const multer = require("multer")
 app.use(multer().any())
-
+mongoose.set('strictQuery', true);
  mongoose
   .connect(
     "mongodb+srv://DeeptirthaMukherjee:QYKI3k8QSKC4I7FZ@cluster1.khatgm1.mongodb.net/project5-db?retryWrites=true&w=majority",
