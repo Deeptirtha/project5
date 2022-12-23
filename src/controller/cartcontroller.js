@@ -27,9 +27,12 @@ const createCart = async function(req,res){
 
         if (!productId) return res.status(400).send({ status: false, msg: "Product id is mandatory to add your product in cart!" })
         if (!isValidObjectId(productId))return res.status(400).send({ status: false, msg: "Please provide a Valid CartID!" })
-        let product = await productModel.findById(productId)
+        let product = await productModel.findOne({_id:productId,isDeleted:false})
         if (!product) return res.status(400).send({ status: false, msg: "Product doesn't exists!" })
 
+
+
+        if(data.quantity==0)return res.status(400).send({status:false,msg:"You can't add 0 quantity of any item in your cart"})
         if (!data.quantity) {
             data.quantity = 1
         }
@@ -48,7 +51,7 @@ const createCart = async function(req,res){
 
                     price=oldCart.totalPrice+(product.price*quantity)
 
-                    totalItem=oldCart.totalItems+quantity
+                    totalItem=productPresent.length
 
                     let cart = await CartModel.findOneAndUpdate({_id:cartId},{items:productPresent,totalPrice:price,totalItems:totalItem},{new: true})
 
@@ -62,10 +65,11 @@ const createCart = async function(req,res){
                 quantity:quantity
             }
             price=oldCart.totalPrice+(product.price*quantity)
-            totalItem=oldCart.totalItems+quantity
+            
 
             oldCart.items.push(newItem)
             allnewItems=oldCart.items
+            totalItem=allnewItems.length
 
             let cart=await CartModel.findByIdAndUpdate({_id: cartId },{items:productPresent,totalPrice:price,totalItems:totalItem},{new: true})
             return res.status(201).send({status:true,message:"Success",data:cart})
@@ -156,7 +160,7 @@ else{cartProduct.splice(index,1)}
 let Newdata={
     items:cartProduct,
     totalPrice:totalCartPrice,
-    totalItems:totalItemsInCart
+    totalItems:cartProduct.length
 }
 
 let updatedCart= await CartModel.findByIdAndUpdate(cartId,Newdata,{new:true})
