@@ -23,7 +23,10 @@ const createCart = async function(req,res){
             var oldCart= await CartModel.findOne({_id:cartId,userId:userId})
             if(!oldCart)return res.status(404).send({status:false,msg:"No cart found with this id"})
  }
+  
 
+        if (!productId) return res.status(400).send({ status: false, msg: "Product id is mandatory to add your product in cart!" })
+        if (!isValidObjectId(productId))return res.status(400).send({ status: false, msg: "Please provide a Valid CartID!" })
         let product = await productModel.findById(productId)
         if (!product) return res.status(400).send({ status: false, msg: "Product doesn't exists!" })
 
@@ -76,6 +79,7 @@ const createCart = async function(req,res){
         return res.status(201).send({status:true,message:"Success",data:cart })
 
     } catch (error) {
+        if(error.code==11000)return res.status(400).send({status:false,msg:"This user already have a cart in Db "})
         return res.status(500).send({status:false,msg:error.message })
     }
 }
@@ -112,6 +116,7 @@ if(!cart)return res.status(404).send({status:false,msg:"No cart found with this 
 if(cart.userId!=userId)return res.status(404).send({status:false,msg:"No cart found with this user Id"})
 
 
+if(!Object.keys(data).includes("removeProduct")){return res.status(400).send({status:false,msg:"Please enter a valid input for removeProduct,between 0 and 1 it's mandatory"})}
 if([0,1].indexOf(removeProduct)<0){return res.status(400).send({status:false,msg:"Please enter a valid input for removeProduct,between 0 and 1"})}
 
 
