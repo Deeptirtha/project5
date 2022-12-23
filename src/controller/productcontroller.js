@@ -153,7 +153,7 @@ const getProduct= async function(req,res){
         if(Object.keys(data).length==0) return res.status(400).send({status: false ,message: 'provide data to update'})
         let {description,price,isFreeShipping,availableSizes, installments,currencyId,currencyFormat } = data
 
-        if (!isValidObjectId(productId)) return res.status(400).send({ status: false, message: 'productId is not in valid format' })
+        if (!isValidObjectId(productId)) return res.status(400).send({ status: false, message: 'productId is not valid' })
         let product = await productModel.findOne({_id:productId,isDeleted:false})
         if (!product) return res.status(404).send({ status: false, message: 'product not found' })
 
@@ -198,7 +198,7 @@ const getProduct= async function(req,res){
           data.availableSizes = size
         }
        let UpdateProduct= await productModel.findOneAndUpdate({_id:productId},data,{new:true})  
-       return res.status(201).send({status:true,message:"product updated successfully",data:UpdateProduct})
+       return res.status(200).send({status:true,message:"product updated successfully",data:UpdateProduct})
     }
          
     

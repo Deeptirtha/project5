@@ -15,18 +15,13 @@ const createCart = async function(req,res){
         }
       if (cartId) {
             if (!isValidObjectId(cartId))return res.status(400).send({ status: false, msg: "Please provide a Valid CartID!" })
-            if (!isValidObjectId(userId))return res.status(400).send({ status: false, msg: "Please provide a Valid userID!" })          
-            
-            let user = await UserModel.findById(userId)
-            if(!user)return res.status(404).send({status:false,msg:"user not found"})
-
             var oldCart= await CartModel.findOne({_id:cartId,userId:userId})
             if(!oldCart)return res.status(404).send({status:false,msg:"No cart found with this id"})
  }
   
 
         if (!productId) return res.status(400).send({ status: false, msg: "Product id is mandatory to add your product in cart!" })
-        if (!isValidObjectId(productId))return res.status(400).send({ status: false, msg: "Please provide a Valid CartID!" })
+        if (!isValidObjectId(productId))return res.status(400).send({ status: false, msg: "Please provide a Valid product ID!" })
         let product = await productModel.findOne({_id:productId,isDeleted:false})
         if (!product) return res.status(400).send({ status: false, msg: "Product doesn't exists!" })
 
@@ -93,9 +88,6 @@ const createCart = async function(req,res){
 const updateCart = async function (req, res) {
     try {
 let userId=req.params.userId
-if(!isValidObjectId(userId))return res.status(400).send({status:false,msg:'Please enter a valid user id'})
-let user=await UserModel.findById(userId)
-if(!user)return res.status(404).send({status:false,msg:"No user found with this user Id"})
 
 let data=req.body
 
@@ -202,7 +194,7 @@ res.status(200).send({satus:true,msg:"Cart Updated Successfully",data:updatedCar
 
         let userId = req.params.userId;
         let findCart = await CartModel.findOne({userId:userId});
-        if (!findCart) { return res.status(400).send({ status: false, message: "Cart does not exist" });}
+        if (!findCart) { return res.status(404).send({ status: false, message: "Cart does not exist" });}
         if (findCart.items.length == 0) { return res.status(400).send({ status: false, message: "Cart is empty" }); }
         await CartModel.updateOne({ _id:findCart._id }, { items: [],totalItems:0,totalPrice:0});
         res.status(204).send()
