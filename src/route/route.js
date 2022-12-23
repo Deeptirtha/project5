@@ -2,6 +2,7 @@ const express= require("express")
 const router= express.Router()
 const userController= require("../controller/usercontroller") 
 const productController= require("../controller/productcontroller")
+const cartController= require("../controller/cartcontroller")
 
 //=================================================USER API's============================================//
 router.post("/register",userController.createUser)
@@ -23,6 +24,12 @@ router.get("/products/:productId",productController.getProduct)
 router.put("/products/:productId",productController.updateProduct)
 
 router.delete("/products/:productId",productController.deleteProduct)
+
+//=====================================================CART API's===============================================//
+router.get("/users/:userId/cart",cartController.getCart)
+
+
+
 
 
 router.all("/*" ,function(req,res){
