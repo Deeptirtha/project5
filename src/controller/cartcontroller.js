@@ -200,26 +200,17 @@ res.status(200).send({satus:true,msg:"Cart Updated Successfully",data:updatedCar
 
   const getCart= async function(req,res){    
     try{
-       let userId= req.params.userId  
-       if(!isValidObjectId(userId)){return res.status(400).send({status:false,message:"Invalid userId"})}
-      let findUser= await UserModel.findById(userId)
-      if(!findUser){return res.status(404).send({status:false,message:"User Not Found"})}
-      
+       let userId= req.params.userId        
       let findCart= await CartModel.findOne({userId:userId}).populate({path:"items.productId",select:{title:1 , price:1 , productImage:1}})
       if(!findCart){return res.status({status:false,message:"No cart present for this user"})}
       return res.status(200).send({status:true,message:"success",data:findCart})
-    
     }
-    catch(error){
-        return res.status(500).send({status:false,message:error.message})
-    }
-    }
+    catch(error){ return res.status(500).send({status:false,message:error.message})}}
 
 
 //===================================================================Delete Cart=================================================================
   const deleteCart = async function (req, res) {
     try {
-
         let userId = req.params.userId;
         let findCart = await CartModel.findOne({userId:userId});
         if (!findCart) { return res.status(404).send({ status: false, message: "Cart does not exist" });}
