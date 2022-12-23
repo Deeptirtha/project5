@@ -97,19 +97,17 @@ let data=req.body
 
 let arr=["productId","cartId"]
 for(i of arr){
-    if(!data[i])return res.status(400).send({status:false,msg:`please input ${i}`})
+    if(!data[i])return res.status(400).send({status:false,msg:`please input ${i} to update your cart`})
     data[i]=data[i].trim()
 }
 let {productId,cartId,removeProduct}=data
 
 
-if(!productId)return res.status(400).send({status:false,msg:"productId is mandatory please input productId"})
 if(!isValidObjectId(productId))return res.status(400).send({status:false,msg:'Please enter a valid product id'})
 let product=await productModel.findOne({_id:productId,isDeleted:false})
 if(!product)return res.status(404).send({status:false,msg:"No product found with this product Id"})
 
 
-if(!cartId)return res.status(400).send({status:false,msg:"cartId is mandatory please input cartId"})
 if(!isValidObjectId(cartId))return res.status(400).send({status:false,msg:'Please enter a valid cart id'})
 let cart=await CartModel.findById(cartId)
 if(!cart)return res.status(404).send({status:false,msg:"No cart found with this cart Id"})
