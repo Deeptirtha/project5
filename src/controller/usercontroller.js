@@ -115,7 +115,7 @@ if(phone){
     if(!bcryptpwd){return res.status(400).send({status:false,message:"please put correct password "})}
    
 
-    let token= jwt.sign({userId:findUser._id},"Project5",{expiresIn:"10h"})
+    let token= jwt.sign({userId:findUser._id},"Project5",{expiresIn:"10d"})
    let obj= {userId:findUser["_id"],token}
 
     return res.status(200).send({status:true,message:"User login successfull",data:obj})

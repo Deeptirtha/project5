@@ -14,7 +14,7 @@ try{
     if(data.status!="pending")return res.status(400).send({status:false,message:"you can't change order status manually"})}
 
     let cart=await cartModel.findById(cartId)
-    if(!cart)return res.status(400).send({status:false,msg:"can't find any cart with this cart Id"})
+    if(!cart)return res.status(400).send({status:false,message:"can't find any cart with this cart Id"})
     if(cart.userId!=userId)return res.status(404).send({status:false,message:"No cart found with this user Id"})
 
     let {items,totalPrice,totalItems}=cart
