@@ -11,28 +11,28 @@ const createCart = async function(req,res){
         let {cartId, productId} =data
 
         if(Object.keys(data).length==0){
-            return res.status(400).send({status:false,msg:"can't create data with empty body"})
+            return res.status(400).send({status:false,message:"can't create data with empty body"})
         }
 
 //======================cart validation chk=========
 
       if (cartId) {
-            if (!isValidObjectId(cartId))return res.status(400).send({ status: false, msg: "Please provide a Valid CartID!" })
+            if (!isValidObjectId(cartId))return res.status(400).send({ status: false, message: "Please provide a Valid CartID!" })
             var oldCart= await CartModel.findOne({_id:cartId,userId:userId})
-            if(!oldCart)return res.status(404).send({status:false,msg:"No cart found with this id"})
+            if(!oldCart)return res.status(404).send({status:false,message:"No cart found with this id"})
  }
 
 //======================product validation chk========
 
-        if (!productId) return res.status(400).send({ status: false, msg: "Product id is mandatory to add your product in cart!" })
-        if (!isValidObjectId(productId))return res.status(400).send({ status: false, msg: "Please provide a Valid product ID!" })
+        if (!productId) return res.status(400).send({ status: false, message: "Product id is mandatory to add your product in cart!" })
+        if (!isValidObjectId(productId))return res.status(400).send({ status: false,message: "Please provide a Valid product ID!" })
         let product = await productModel.findOne({_id:productId,isDeleted:false})
-        if (!product) return res.status(400).send({ status: false, msg: "Product doesn't exists!" })
+        if (!product) return res.status(400).send({ status: false, message: "Product doesn't exists!" })
 
 
 //=====================quantity validation============
 
-        if(data.quantity==0)return res.status(400).send({status:false,msg:"You can't add 0 quantity of any item in your cart"})
+        if(data.quantity==0)return res.status(400).send({status:false,message:"You can't add 0 quantity of any item in your cart"})
 
 //====================if req body does not containt quantity====
 
@@ -95,7 +95,7 @@ const createCart = async function(req,res){
         return res.status(201).send({status:true,message:"Success",data:cart })
 
     } catch (error) {
-        if(error.code==11000)return res.status(400).send({status:false,msg:"This user already have a cart in Db "})
+        if(error.code==11000)return res.status(400).send({status:false,message:"This user already have a cart in Db "})
         return res.status(500).send({status:false,msg:error.message })
     }
 }
@@ -110,33 +110,33 @@ let data=req.body
 
 let arr=["productId","cartId"]
 for(i of arr){
-    if(!data[i])return res.status(400).send({status:false,msg:`please input ${i} to update your cart`})
+    if(!data[i])return res.status(400).send({status:false,message:`please input ${i} to update your cart`})
     data[i]=data[i].trim()
 }
 let {productId,cartId,removeProduct}=data
 
 //============================product validation chk
 
-if(!isValidObjectId(productId))return res.status(400).send({status:false,msg:'Please enter a valid product id'})
+if(!isValidObjectId(productId))return res.status(400).send({status:false,message:'Please enter a valid product id'})
 let product=await productModel.findOne({_id:productId,isDeleted:false})
-if(!product)return res.status(404).send({status:false,msg:"No product found with this product Id"})
+if(!product)return res.status(404).send({status:false,message:"No product found with this product Id"})
 
 //===============================cart validation chk
 
-if(!isValidObjectId(cartId))return res.status(400).send({status:false,msg:'Please enter a valid cart id'})
+if(!isValidObjectId(cartId))return res.status(400).send({status:false,message:'Please enter a valid cart id'})
 let cart=await CartModel.findById(cartId)
 if(!cart)return res.status(404).send({status:false,msg:"No cart found with this cart Id"})
-if(cart.userId!=userId)return res.status(404).send({status:false,msg:"No cart found with this user Id"})
+if(cart.userId!=userId)return res.status(404).send({status:false,message:"No cart found with this user Id"})
 
 //=============================removeProduct chk
 
-if(!Object.keys(data).includes("removeProduct")){return res.status(400).send({status:false,msg:"Please enter a valid input for removeProduct,between 0 and 1 it's mandatory"})}
-if([0,1].indexOf(removeProduct)<0){return res.status(400).send({status:false,msg:"Please enter a valid input for removeProduct,between 0 and 1"})}
+if(!Object.keys(data).includes("removeProduct")){return res.status(400).send({status:false,message:"Please enter a valid input for removeProduct,between 0 and 1 it's mandatory"})}
+if([0,1].indexOf(removeProduct)<0){return res.status(400).send({status:false,message:"Please enter a valid input for removeProduct,between 0 and 1"})}
 
 
 
 let cartProduct=cart.items
-if(cartProduct.length==0){return res.status(400).send({status:false,msg:"Cart already deleted"})}
+if(cartProduct.length==0){return res.status(400).send({status:false,message:"Cart already deleted"})}
 
 
 //============================extracting item from cart
@@ -150,8 +150,8 @@ if(cartProduct[i].productId.toString()==productId){
 }
 }
 
-if(Object.keys(editproduct).length==0)return res.status(400).send({status:false,msg:"No such product found in user cart"})
-if(editproduct.quantity==0)return res.status(400).send({status:false,msg:"No such product found in user cart"})
+if(Object.keys(editproduct).length==0)return res.status(400).send({status:false,message:"No such product found in user cart"})
+if(editproduct.quantity==0)return res.status(400).send({status:false,message:"No such product found in user cart"})
 
 //======================================updating product
 
@@ -188,7 +188,7 @@ let Newdata={
 
 let updatedCart= await CartModel.findByIdAndUpdate(cartId,Newdata,{new:true})
 
-res.status(200).send({satus:true,msg:"Cart Updated Successfully",data:updatedCart})
+res.status(200).send({satus:true,message:"Cart Updated Successfully",data:updatedCart})
 
     } catch (err) {
       res.status(500).send({ status: false, error: err.message });

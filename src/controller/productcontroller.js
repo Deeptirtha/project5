@@ -15,11 +15,11 @@ const createProduct= async function(req,res){
          if(Object.keys(data).length==0){
             return res.status(400).send({status:false,message:"Data should be present in request body"})
          }
-         if(files.length==0)return res.status(400).send({status:false,msg:"profile image is manndatory"})
+         if(files.length==0)return res.status(400).send({status:false,message:"profile image is manndatory"})
                   
         let arr=Object.keys(data)
         for(i of arr){
-         if(data[i].trim()=="")return res.status(400).send({status:false,msg:` ${i} can't be empty`})
+         if(data[i].trim()=="")return res.status(400).send({status:false,message:` ${i} can't be empty`})
         }
 
          if(!title){return res.status(400).send({status:false,message:"Title should be present"})}  
@@ -36,12 +36,12 @@ const createProduct= async function(req,res){
          if(currencyFormat!=="₹"){return res.status(400).send({status:false,message:"currencyFormat should be this-₹ "})}
 
         if(data.installments){
-        if(isNaN(data.installments))return res.status(400).send({status:false,msg:"Please put installments in Number"})}
+        if(isNaN(data.installments))return res.status(400).send({status:false,message:"Please put installments in Number"})}
         
 
         if(data.isFreeShipping){
           if(["false","true"].indexOf(data.isFreeShipping)<0 ){
-            return res.status(400).send({status:false,msg:"Enter isFreeShipping in boolian form"})
+            return res.status(400).send({status:false,message:"Enter isFreeShipping in boolian form"})
           }
         }
         
@@ -58,7 +58,7 @@ const createProduct= async function(req,res){
         }
 
         if(data.installments){
-          if(isNaN(data.installments.trim()))return res.status(400).send({status:false,msg:"Please put installments in Number"})}
+          if(isNaN(data.installments.trim()))return res.status(400).send({status:false,message:"Please put installments in Number"})}
        
         if(data.isDeleted=="true"){data.deletedAt=Date.now()}
 
@@ -88,7 +88,7 @@ const getFilteredProduct = async function (req, res){
       }
     
       if (data.priceSort){
-        if(["1","-1"].indexOf(data.priceSort)<0){return res.status(400).send({status:false,msg:"Please enter a valid sort order between 1 or -1"})}
+        if(["1","-1"].indexOf(data.priceSort)<0){return res.status(400).send({status:false,message:"Please enter a valid sort order between 1 or -1"})}
       }
 
       if(data.size) {
@@ -102,13 +102,13 @@ const getFilteredProduct = async function (req, res){
       if(data.priceGreaterThan || data.priceLessThan) {
         
         if(data.priceGreaterThan && data.priceLessThan){
-          if(!isValidPrice(data.priceGreaterThan)|| !isValidPrice(data.priceLessThan))return res.status(400).send({status:false,msg:"Enter a valid price to get your product"})
+          if(!isValidPrice(data.priceGreaterThan)|| !isValidPrice(data.priceLessThan))return res.status(400).send({status:false,message:"Enter a valid price to get your product"})
           conditions.price={$gte:data.priceGreaterThan,$lte:data.priceLessThan}}
         else if(data.priceGreaterThan){
-          if(!isValidPrice(data.priceGreaterThan))return res.status(400).send({status:false,msg:"Enter a valid price to get your product"})
+          if(!isValidPrice(data.priceGreaterThan))return res.status(400).send({status:false,message:"Enter a valid price to get your product"})
           conditions.price={$gt:data.priceGreaterThan}}
         else{
-          if(!isValidPrice(data.priceLessThan))return res.status(400).send({status:false,msg:"Enter a valid price to get your product"})
+          if(!isValidPrice(data.priceLessThan))return res.status(400).send({status:false,message:"Enter a valid price to get your product"})
           conditions.price={$lte:data.priceLessThan}}}
 
 
@@ -160,7 +160,7 @@ const getProduct= async function(req,res){
          
         let arr=Object.keys(data)
         for(i of arr){
-         if(data[i].trim()=="")return res.status(400).send({status:false,msg:` ${i} can't be empty`})
+         if(data[i].trim()=="")return res.status(400).send({status:false,message:` ${i} can't be empty`})
         }
 
         if(description){
@@ -176,7 +176,7 @@ const getProduct= async function(req,res){
           if (currencyFormat.trim() !== "₹") { return res.status(400).send({ status: false, message: "currencyFormat should be this-₹ " }) } }
 
        if(installments){
-       if(isNaN(installments))return res.status(400).send({status:false,msg:"Please put installments in Number"})}
+       if(isNaN(installments))return res.status(400).send({status:false,message:"Please put installments in Number"})}
        
         if (files.length>0) {
           let uploadImage = await uploadFile(files[0])
@@ -186,7 +186,7 @@ const getProduct= async function(req,res){
        
         if(isFreeShipping){
           if(["false","true"].indexOf(isFreeShipping)<0 ){
-            return res.status(400).send({status:false,msg:"Enter isFreeShipping in boolian form"})
+            return res.status(400).send({status:false,message:"Enter isFreeShipping in boolian form"})
           }
         }
 
@@ -221,10 +221,10 @@ const getProduct= async function(req,res){
           }
       
             await productModel.findOneAndUpdate({_id:productId},{isDeleted:true,deletedAt:Date.now()})
-          return res.status(200).send({status:false,msg:"Product deleted succesfully"}) 
+          return res.status(200).send({status:false,message:"Product deleted succesfully"}) 
       }
       catch(err){
-          return res.status(500).send({status:false,msg:err.message})
+          return res.status(500).send({status:false,message:err.message})
       }
       }
 

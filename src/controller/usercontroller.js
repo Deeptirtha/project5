@@ -159,19 +159,19 @@ const updateUser=async function(req,res){
 
         let array=Object.keys(body)
         for(i of array){
-         if(body[i].trim()=="")return res.status(400).send({status:false,msg:` ${i} can't be empty`})
+         if(body[i].trim()=="")return res.status(400).send({status:false,message:` ${i} can't be empty`})
         }
        
 
         if (fname) {
             if (isValidString(fname)) 
-            return res.status(400).send({ status: false, msg: "provide valid first name" })
+            return res.status(400).send({ status: false,message: "provide valid first name" })
             
         }  
 
        if (lname) {
                 if (isValidString(lname)) 
-                return res.status(400).send({ status: false, msg: "lname already presesnt" })
+                return res.status(400).send({ status: false, message: "lname already presesnt" })
                 
        } 
 
@@ -204,7 +204,7 @@ if(body.address){
      
         if(address.shipping){
 
-           if (typeof(address.shipping)!== "object" ) {return res.status(400).send({ status: true, msg: "please put shipping-address in object format" })}
+           if (typeof(address.shipping)!== "object" ) {return res.status(400).send({ status: true,message: "please put shipping-address in object format" })}
            if (address.shipping.street){
            if (address.shipping.street.trim()) {return res.status(400).send({status: false,message: "please put valid street in your shipping-address "})}}
            if (address.shipping.city){
@@ -213,7 +213,7 @@ if(body.address){
            if (!isValidPincode(address.shipping.pincode)) {return res.status(400).send({ status: false, message: "please input valid shipping-pincode " }) }}}
     
            if(address.billing){
-           if (typeof(address.billing)!== "object" ) {return res.status(400).send({ status: true, msg: "please put billing-address in object format" })}
+           if (typeof(address.billing)!== "object" ) {return res.status(400).send({ status: true, message: "please put billing-address in object format" })}
            if (address.billing.street){
            if ( address.billing.street.trim()) {return res.status(400).send({status: false,message: "please put valid street in your billing-address "})}}
            if (address.billing.city){
@@ -232,7 +232,7 @@ if(body.address){
         return res.status(200).send({ status: true, message: "Successfully updated", data: update });
     }
     catch(err){
-        return res.status(500).send({status:false,msg:err.message})
+        return res.status(500).send({status:false,message:err.message})
     }
 }
 
