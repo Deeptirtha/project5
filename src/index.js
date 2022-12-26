@@ -9,6 +9,7 @@ const multer= require("multer")
 
 
  mongoose.set('strictQuery', false)
+ 
  mongoose.connect("mongodb+srv://DeeptirthaMukherjee:QYKI3k8QSKC4I7FZ@cluster1.khatgm1.mongodb.net/project5-db?retryWrites=true&w=majority",
     { UseNewUrlParser: true }
   )

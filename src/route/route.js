@@ -3,7 +3,7 @@ const router= express.Router()
 const userController= require("../controller/usercontroller") 
 const productController= require("../controller/productcontroller")
 const cartController= require("../controller/cartcontroller")
-
+const orderController= require("../controller/ordercontroller")
 //=================================================USER API's============================================//
 router.post("/register",userController.createUser)
 
@@ -30,9 +30,16 @@ router.get("/users/:userId/cart",cartController.getCart)
 
 
 
+//=====================================================ORDER API's=================================================//
+router.post("/users/:userId/orders",orderController.createOrder)
+
+router.put("/users/:userId/orders", orderController.updateOrder)
+
 
 
 router.all("/*" ,function(req,res){
     return res.status(404).send({msg:"Path not found"})})
+
+
 
 module.exports= router
