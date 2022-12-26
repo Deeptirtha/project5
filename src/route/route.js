@@ -4,6 +4,7 @@ const {CreatUser,getUser,userLogin,updateUser}= require("../controller/usercontr
 const {authentication,authorization}= require("../auth/auth")
 const {createProduct,getFilteredProduct,getProduct,updateproduct,deleteProductById}=require("../controller/productcontroller")
 const {createCart,updateCart,getCart,deleteCart}=require("../controller/cartcontroller")
+const {createOrder,updateOrder}=require("../controller/ordercontroller")
 
 //=================================================USER API's===================================================
 
@@ -37,8 +38,11 @@ router.get("/users/:userId/cart",authentication,authorization,getCart)
 
 router.delete("/users/:userId/cart",authentication,authorization,deleteCart)
 
+//===============================================ORDER API's==================================================
 
+router.post("/users/:userId/orders",authentication,authorization,createOrder)
 
+router.put("/users/:userId/orders",authentication,authorization,updateOrder)
 
 
 

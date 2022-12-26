@@ -40,5 +40,13 @@ const validword=function(name){
         var RE = /^-{0,1}\d*\.{0,1}\d+$/;
         return (RE.test(input));
       }
+      const isValidStatus = (size) => {
+        let status = ["pending", "completed", "canceled"];
+            if (status.includes(size)) {
+              return true
+            } else {
+              return false
+            }
+          }
 
-  module.exports={validword,isValidObjectId,isValidPincode ,isValidString,isValidPhone,isValidEmail,isValidPswd,isValidSize,isValidPrice}
+  module.exports={validword,isValidObjectId,isValidPincode ,isValidString,isValidPhone,isValidEmail,isValidPswd,isValidSize,isValidPrice,isValidStatus}
