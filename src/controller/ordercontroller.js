@@ -34,7 +34,7 @@ try{
  
 
     let placeOrder=await orderModel.create(data)
-    //await cartModel.updateOne({ _id:cartId}, { items: [],totalItems:0,totalPrice:0})
+    await cartModel.updateOne({ _id:cartId}, { items: [],totalItems:0,totalPrice:0})
     res.status(201).send({status:true,message:"Ordered successfully",data:placeOrder})
 }
 catch(err){

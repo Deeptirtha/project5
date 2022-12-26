@@ -64,7 +64,7 @@ const createProduct= async function(req,res){
 
         
          let product= await productModel.create(data)  
-         return res.status(201).send({status:true,message:"product created successfully",data:product})
+         return res.status(201).send({status:true,message:"Success",data:product})
     }
     catch(error){
         if(error.code==11000){return res.status(400).send({status:false,message:"title should be unique"})}
@@ -103,7 +103,7 @@ const getFilteredProduct = async function (req, res){
         
         if(data.priceGreaterThan && data.priceLessThan){
           if(!isValidPrice(data.priceGreaterThan)|| !isValidPrice(data.priceLessThan))return res.status(400).send({status:false,message:"Enter a valid price to get your product"})
-          conditions.price={$gte:data.priceGreaterThan,$lte:data.priceLessThan}}
+          conditions.price={$gt:data.priceGreaterThan,$lt:data.priceLessThan}}
         else if(data.priceGreaterThan){
           if(!isValidPrice(data.priceGreaterThan))return res.status(400).send({status:false,message:"Enter a valid price to get your product"})
           conditions.price={$gt:data.priceGreaterThan}}
@@ -136,7 +136,7 @@ const getProduct= async function(req,res){
        }
          let findProduct= await productModel.findOne({_id:productId,isDeleted:false})
          if(!findProduct){return res.status(404).send({status:false,message:"product not found"})}
-         return res.status(200).send({status:true,message:"success",data:findProduct})
+         return res.status(200).send({status:true,message:"Success",data:findProduct})
     }
     catch(error){
         return res.status(500).send({status:false,message:error.message})
@@ -221,7 +221,7 @@ const getProduct= async function(req,res){
           }
       
             await productModel.findOneAndUpdate({_id:productId},{isDeleted:true,deletedAt:Date.now()})
-          return res.status(200).send({status:false,message:"Product deleted succesfully"}) 
+          return res.status(200).send({status:true,message:"Product deleted succesfully"}) 
       }
       catch(err){
           return res.status(500).send({status:false,message:err.message})

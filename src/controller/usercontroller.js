@@ -196,31 +196,36 @@ const updateUser=async function(req,res){
         if (!isValidPswd(password.trim())) 
         return res.status(400).send({ status: false, message: "Please enter valid password" })
        }
-if(body.address){           
+if(body.address){    
+           
     let address=body.address
     address=JSON.parse(address)
 
-        if (typeof address != "object") {return res.status(400).send({ status: false, message: "provide address in proper formate" })}
-     
-        if(address.shipping){
+    if (typeof(address)!== "object") {return res.status(400).send({ status: true, msg: "please put address in object format" })}
 
-           if (typeof(address.shipping)!== "object" ) {return res.status(400).send({ status: true,message: "please put shipping-address in object format" })}
-           if (address.shipping.street){
-           if (address.shipping.street.trim()) {return res.status(400).send({status: false,message: "please put valid street in your shipping-address "})}}
-           if (address.shipping.city){
-           if ( isValidString(address.shipping.city.trim())) {return res.status(400).send({status: false,message: "please put valid city in your shipping-address  "})}}
-           if (address.shipping.pincode){
-           if (!isValidPincode(address.shipping.pincode)) {return res.status(400).send({ status: false, message: "please input valid shipping-pincode " }) }}}
-    
-           if(address.billing){
-           if (typeof(address.billing)!== "object" ) {return res.status(400).send({ status: true, message: "please put billing-address in object format" })}
-           if (address.billing.street){
-           if ( address.billing.street.trim()) {return res.status(400).send({status: false,message: "please put valid street in your billing-address "})}}
-           if (address.billing.city){
-           if ( isValidString(address.billing.city.trim())) {return res.status(400).send({status: false,message: "please put valid city  in your billing-address  "})}}
-           if (address.billing.pincode){
-           if (!isValidPincode (address.billing.pincode)) {return res.status(400).send({ status: false, message: "please input valid billing-pincode " }) }}}
-        
+    if (typeof(address.shipping)!== "object" || !address.shipping) {return res.status(400).send({ status: true, msg: "please put shipping-address in object format" })}
+
+    if (typeof(address.billing)!== "object" || !address.billing) {return res.status(400).send({ status: true, msg: "please put billing-address in object format" })}
+
+     let arr=["street","city","pincode"]
+     for(i of arr){
+         if (!address.shipping[i])return res.status(400).send({status:false,msg:`${i} is not present inside your shipping-address`})}
+
+     for(i of arr){
+         if (!address.billing[i])return res.status(400).send({status:false,msg:`${i} is not present inside your billing-address`})}
+
+     if (!address.shipping.street.trim()) {return res.status(400).send({status: false,message: "please put valid street in your shipping-address "})}
+ 
+     if (!address.shipping.city || isValidString(address.shipping.city.trim())) {return res.status(400).send({status: false,message: "please put valid city in your shipping-address  "})}
+ 
+     if (!address.shipping.pincode ||!isValidPincode(address.shipping.pincode)) {return res.status(400).send({ status: false, message: "please input valid shipping-pincode " }) }
+     
+     if (!address.billing.street.trim()) {return res.status(400).send({status: false,message: "please put valid street in your billing-address "})}
+
+     if (!address.billing.city || isValidString(address.billing.city.trim())) {return res.status(400).send({status: false,message: "please put valid city in your billing-address  "})}
+ 
+     if (!address.billing.pincode ||!isValidPincode (address.billing.pincode)) {return res.status(400).send({ status: false, message: "please input valid billing-pincode " }) }
+ 
             body.address=address
         }
             if (files && files.length != 0) {

@@ -4,7 +4,8 @@ const isValidObjectId = (objectId) => {
     return mongoose.Types.ObjectId.isValid(objectId)
 }
 const validword=function(name){
-  const regexName=/^[a-zA-Z ]+$/;
+  const regexName=/^(.|\s)*[a-zA-Z]+(.|\s)*$/;
+ 
   return regexName.test(name)
 }
   
