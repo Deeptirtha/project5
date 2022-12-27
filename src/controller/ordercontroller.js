@@ -56,6 +56,7 @@ const updateOrder=async function(req,res){
 
         if(!order)return res.status(400).send({status:false,message:"can't find any order with this order Id"})
         if(order.userId!=userId)return res.status(404).send({status:false,message:"This order doesn't belongs to this user"})
+        if(order.status==status)return res.status(400).send({status:false,message:`the order is already in ${status} condition`})
 
         if(order.cancellable==false){
         if(data.status.trim()=="canceled")return res.status(400).send({status:false,message:"This order is not cancellable"})}
